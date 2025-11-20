@@ -1,0 +1,13 @@
+##Hello World, this is a data cleaning script for loading resighting data into R.
+##Rodrigo Martin de Oliveira
+
+## Load necessary libraries
+
+
+# Load resighting data from CSV files into R data frames
+binder4 <- read.csv(file = "RAWDATA/binder4-resightings.csv", header = TRUE, sep = ",")
+binder3 <- read.csv(file = "RAWDATA/binder3-resightings.csv", header = TRUE, sep = ",")
+binder2 <- read.csv(file = "RAWDATA/binder2-resightings.csv", header = TRUE, sep = ",")
+binder0 <- read.csv(file = "RAWDATA/binder0-resightings.csv", header = TRUE, sep = ",")
+
+
