@@ -11,3 +11,4 @@ binder2 <- read.csv(file = "RAWDATA/binder2-resightings.csv", header = TRUE, sep
 binder0 <- read.csv(file = "RAWDATA/binder0-resightings.csv", header = TRUE, sep = ",")
 
 
+# View the first few rows of each data frame to verify successful loading
