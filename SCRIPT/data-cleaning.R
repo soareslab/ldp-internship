@@ -5,6 +5,8 @@
 
 ## Load necessary libraries
 library(dplyr)
+renv::snapshot()
+
 
 # Load resighting data from CSV files into R data frames
 binder4 <- read.csv(file = "RAWDATA/binder4-resightings.csv", header = TRUE, sep = ",")
@@ -37,7 +39,6 @@ binder2 <- binder2 %>%
 #Combine columns x.1, x.2 and x.3 of binder2 into a new column called date and then incorporate it into date_resighted column
 binder2 <- binder2 %>%
   mutate(date = paste(X.3, X.2, X.1, sep = "-")) %>%
- 
-
-
- 
+  mutate(combine(date_resighted, date)) %>%
+  
+  
