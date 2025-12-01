@@ -1,0 +1,4 @@
+band_num,species,nest_num,nasalTags_LT,nasalTags_RT,date_hatched,ordinal_hatched,fenced,radio_freq,num_hatched,date_trapped,handling_time_min,implant_mauser,drug_pm,dose_cc,num_leaving_nest,comments
+1107-16336,MALL,211,Brn circle,Brn tri,1994-07-24,205,NA,2.140,NA,NA,NA,I,NA,NA,NA,"""try 2.137"" written below radio frequency"
+2367-85881,MALL,530,GR square,Lt BL square,1997-07-14,195,Y,2370,9,1997-07-06,NA,NA,p,1.1,9,"""near pd40"" written by nest number, ""195"" written below date hatched, ""Recruit"" and ""Age = 3 yr. old"" written in margins, ""Radioed Recruit Nest 211/94"" written on post-it note attached"
+2367-85881,MALL,530,Grn square,Lt BL square,1997-07-14,195,Y,2369,9,1997-07-06,NA,M,p,NA,9,"""195"" written below date hatched"

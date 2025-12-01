@@ -1,0 +1,7 @@
+band_num,species,nest_num,nasalTags_LT,nasalTags_RT,date_hatched,ordinal_hatched,fenced,radio_freq,num_hatched,date_trapped,handling_time_min,implant_mauser,drug_pm,dose_cc,num_leaving_nest,comments
+686-13981,GADW,555,wht circle,LB circle,1997-06-29,180,n,3222,9,1997-06-28,50,NA,p,1.25,9,"row 1,2,3 has same data except year"
+686-13981,GADW,555,wht circle,Lt B circle,1996-06-29,180,n,3222,9,1996-06-28,50,m,p,1.25,9,"row 1,2,3 has same data except year"
+686-13981,GADW,555,wht circle,Lt B circle,1997-06-29,180,n,3222,9,1997-06-28,50,NA,p,1.25,9,"row 1,2,3 has same data except year"
+896-75266,GADW,468,yell triangle,white triangle,1996-08-07,220,y,3363,10,1996-08-04,NA,m,p,NA,10,
+896-75274,GAD,424,pink triangle,wht triangle,1996-08-03,215,NA,3322,10,1996-07-27,70,m,p,0.6 in 60 sec,10,
+896-75299,GADW,395,brn triangle,white oval,1996-06-22,204,y,2722,10,1996-07-10,60,m,p,0.5 in 760 sec,NA,
