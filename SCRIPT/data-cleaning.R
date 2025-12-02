@@ -27,41 +27,20 @@ radio_tagging_binder1 <- read.csv(file = "RAWDATA/radio_tagging_binder1.csv", he
 radio_tagging_binder0 <- read.csv(file = "RAWDATA/radio_tagging_binder0.csv", header = TRUE, sep = ",")
 
 
-# View the first few rows of each data frame to verify successful loading
-head(resight_binder4)
-head(resight_binder3)
-head(resight_binder2)
-head(resight_binder1)
-head(resight_binder0)
-# Check the structure of each data frame
-str(resight_binder4)
-str(resight_binder3)
-str(resight_binder2)
-str(resight_binder1)
-str(resight_binder0)
-
-resight_binder4$date_resighted <- as.Date(resight_binder4$date_resighted, format="%Y-%d-%m")
-resight_binder3$date_resighted <- as.Date(resight_binder3$date_resighted, format="%Y-%d-%m")
-resight_binder2$date_resighted <- as.Date(resight_binder2$date_resighted, format="%Y-%d-%m")
-resight_binder1$date_resighted <- as.Date(resight_binder1$date_resighted, format="%Y-%d-%m")
-resight_binder0$date_resighted <- as.Date(resight_binder0$date_resighted, format="%Y-%d-%m")
 
 #add a title to first column of binder2
 resight_binder2 <- resight_binder2 %>%
   rename(band_num = X)
 
+# check the first row and column names of binder2
+
+head(resight_binder2)
+
+
 #Combine columns x.1, x.2 and x.3 of binder2 into a new column called date and then incorporate it into date_resighted column
 resight_binder2 <- resight_binder2 %>%
   mutate(date = paste(X.3, X.2, X.1, sep = "-")) %>% 
   mutate(date_combined = paste(date_resighted, date))
-  
-#head(resight_binder2)
-#resight_binder2$date_resighted <- as.Date(resight_binder2$date_combined, format="%Y-%d-%m")
-
-# remove NA values from date_combined column in binder2 data frame
-#resight_binder2 <- resight_binder2 %>%
- # filter(!is.na(date_combined))
-
 
 sight_binder2 <- resight_binder2 %>%
   mutate(
@@ -69,12 +48,24 @@ sight_binder2 <- resight_binder2 %>%
     date = paste(X.3, X.2, X.1, sep = "-"),
     
     # Merge 'date' with existing 'date_resighted' row-wise
-    date_resighted = paste(date_resighted, date, sep = "-"),
-    
-    # Convert to proper Date format (YYYY-MM-DD)
-    date = as.Date(date, format = "%d-%m-%Y, %Y-%d-%m"))
+    date_resighted = paste(date_resighted, date, sep = "-"))
+
+#head(resight_binder2)
+#resight_binder2$date_resighted <- as.Date(resight_binder2$date_combined, format="%Y-%d-%m")
+
+# remove NA values from date_combined column in binder2 data frame
+#resight_binder2 <- resight_binder2 %>%
+# filter(!is.na(date_combined))
 
 
+
+# Convert date_resighted columns to Date format
+
+resight_binder4$date_resighted <- as.Date(resight_binder4$date_resighted, format="%Y-%d-%m")
+resight_binder3$date_resighted <- as.Date(resight_binder3$date_resighted, format="%Y-%d-%m")
+resight_binder2$date_resighted <- as.Date(resight_binder2$date_resighted, format="%Y-%d-%m")
+resight_binder1$date_resighted <- as.Date(resight_binder1$date_resighted, format="%Y-%d-%m")
+resight_binder0$date_resighted <- as.Date(resight_binder0$date_resighted, format="%Y-%d-%m")
 
 
 
