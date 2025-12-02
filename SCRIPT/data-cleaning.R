@@ -2,9 +2,11 @@
 ##Rodrigo Martin de Oliveira
 
 ##install.packages("dplyr")
+##install.packages("lubridate")
 
 ## Load necessary libraries
 library(dplyr)
+library(lubridate)
 renv::snapshot()
 
 
@@ -57,8 +59,24 @@ resight_binder2 <- resight_binder2 %>%
 #resight_binder2$date_resighted <- as.Date(resight_binder2$date_combined, format="%Y-%d-%m")
 
 # remove NA values from date_combined column in binder2 data frame
-resight_binder2 <- resight_binder2 %>%
-  filter(!is.na(date_combined))
+#resight_binder2 <- resight_binder2 %>%
+ # filter(!is.na(date_combined))
+
+
+sight_binder2 <- resight_binder2 %>%
+  mutate(
+    # Combine X.3, X.2, X.1 into a new column 'date'
+    date = paste(X.3, X.2, X.1, sep = "-"),
+    
+    # Merge 'date' with existing 'date_resighted' row-wise
+    date_resighted = paste(date_resighted, date, sep = "-"),
+    
+    # Convert to proper Date format (YYYY-MM-DD)
+    date = as.Date(date, format = "%d-%m-%Y, %Y-%d-%m"))
+
+
+
+
 
 # combine data from "band_num" column in all binders into a single data frame
 all_band_num_data <- bind_rows(resight_binder4$band_num, resight_binder3$band_num, resight_binder2$band_num, resight_binder1$band_num, resight_binder0$band_num)
