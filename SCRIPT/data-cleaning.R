@@ -82,3 +82,21 @@ unique_bands <- bind_rows(
 # export "unique_bands" data frame to CSV file
 write.csv(unique_bands, file = "CLEANDATA//unique_bands.csv")
 
+
+# get unique values from "location" column in all binders into a single data frame
+unique_locations <- bind_rows(
+  resight_binder4 %>% select(location),
+  resight_binder3 %>% select(location),
+  resight_binder2 %>% select(location),
+  resight_binder1 %>% select(location),
+  resight_binder0 %>% select(location)
+) %>%
+  distinct()
+
+# export "location" data frame to CSV file
+write.csv(unique_locations, file = "CLEANDATA//unique_locations.csv")
+
+
+
+
+
