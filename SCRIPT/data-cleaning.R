@@ -69,6 +69,16 @@ resight_binder0$date_resighted <- as.Date(resight_binder0$date_resighted, format
 
 
 
-# combine data from "band_num" column in all binders into a single data frame
-all_band_num_data <- bind_rows(resight_binder4$band_num, resight_binder3$band_num, resight_binder2$band_num, resight_binder1$band_num, resight_binder0$band_num)
+# get unique values from "band_num" column in all binders into a single data frame
+unique_bands <- bind_rows(
+  resight_binder4 %>% select(band_num),
+  resight_binder3 %>% select(band_num),
+  resight_binder2 %>% select(band_num),
+  resight_binder1 %>% select(band_num),
+  resight_binder0 %>% select(band_num)
+) %>%
+  distinct()
+
+# export "unique_bands" data frame to CSV file
+write.csv(unique_bands, file = "CLEANDATA//unique_bands.csv")
 
