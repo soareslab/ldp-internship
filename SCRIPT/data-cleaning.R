@@ -33,7 +33,6 @@ resight_binder2 <- resight_binder2 %>%
   rename(band_num = X)
 
 # check the first row and column names of binder2
-
 head(resight_binder2)
 
 
@@ -60,7 +59,6 @@ sight_binder2 <- resight_binder2 %>%
 
 
 # Convert date_resighted columns to Date format
-
 resight_binder4$date_resighted <- as.Date(resight_binder4$date_resighted, format="%Y-%d-%m")
 resight_binder3$date_resighted <- as.Date(resight_binder3$date_resighted, format="%Y-%d-%m")
 resight_binder2$date_resighted <- as.Date(resight_binder2$date_resighted, format="%Y-%d-%m")
