@@ -18,7 +18,7 @@ resight_binder3 <- read.csv(file = "RAWDATA/binder3-resightings.csv", header = T
 resight_binder2 <- read.csv(file = "RAWDATA/binder2-resightings.csv", header = TRUE, sep = ",")
 resight_binder1 <- read.csv(file = "RAWDATA/binder1-resightings.csv", header = TRUE, sep = ",")
 resight_binder0 <- read.csv(file = "RAWDATA/binder0-resightings.csv", header = TRUE, sep = ",")
-SD_pond_coords_in <- read.csv(file = "RAWDATA/SD_pond_coords_in.csv", header = TRUE, sep = ",")
+
 
 #load radio-tagging data from CSV file into R data frame
 radio_tagging_binder6 <- read.csv(file = "RAWDATA/radio_tagging_binder6.csv", header = TRUE, sep = ",")
@@ -29,6 +29,9 @@ radio_tagging_binder2 <- read.csv(file = "RAWDATA/radio_tagging_binder2.csv", he
 radio_tagging_binder1 <- read.csv(file = "RAWDATA/radio_tagging_binder1.csv", header = TRUE, sep = ",")
 radio_tagging_binder0 <- read.csv(file = "RAWDATA/radio_tagging_binder0.csv", header = TRUE, sep = ",")
 
+# Load banding info data provided by Mercy from St. Dennis
+SD_pond_coords_in <- read.csv(file = "RAWDATA/SD_pond_coords_in.csv", header = TRUE, sep = ",")
+band_num_species_MH_12.08.2025 <- read.csv(file = "RAWDATA/band_num_species_MH_12.08.2025.csv", header = TRUE, sep = ",")
 
 
 #add a title to first column of binder2
@@ -38,9 +41,14 @@ resight_binder2 <- resight_binder2 %>%
 # check the first row and column names of binder2
 head(resight_binder2)
 
-# 
+# Create a new data frame with columns from "band_num_species_MH_12.08.2025" data frame, selecting only "band_num", "species", "DATE" and "COORDINATES" columns
+  banding_info <- band_num_species_MH_12.08.2025 %>%
+  select(band_num, SPECIES, DATE, COORDINATES)
+# Export "banding_info" data frame to CSV file
+write.csv(banding_info, file = "CLEANDATA/banding_info.csv", row.names = TRUE)
+  
 
-
+# Create a new data frame called "pond_coords" with columns from "SD_pond_coords_in" data frame, selecting only "POND_NAME", "LATITUDE" and "LONGITUDE" columns
 
 
 
