@@ -41,15 +41,38 @@ resight_binder2 <- resight_binder2 %>%
 # check the first row and column names of binder2
 head(resight_binder2)
 
-# Create a new data frame with columns from "band_num_species_MH_12.08.2025" data frame, selecting only "band_num", "species", "DATE" and "COORDINATES" columns
+#####################################################################################
+###Code from 2026-01-03 starts here##################################################
+#####################################################################################
+
+
+## Create a new data frame with columns from "band_num_species_MH_12.08.2025" data frame, selecting only "band_num", "species", "DATE" and "COORDINATES" columns
   banding_info <- band_num_species_MH_12.08.2025 %>%
   select(band_num, SPECIES, DATE, COORDINATES)
 # Export "banding_info" data frame to CSV file
 write.csv(banding_info, file = "CLEANDATA/banding_info.csv", row.names = TRUE)
   
 
-# Create a new data frame called "pond_coords" with columns from "SD_pond_coords_in" data frame, selecting only "POND_NAME", "LATITUDE" and "LONGITUDE" columns
+## Create a new data frame called "pond_coords" with columns from "SD_pond_coords_in" data frame, selecting only "POND_NAME", "LATITUDE" and "LONGITUDE" columns
+pond_coords <- SD_pond_coords_in %>%
+  select(Pond.ID, Easting, Northing)
+# Export "pond_coords" data frame to CSV file
+write.csv(pond_coords, file = "CLEANDATA/pond_coords.csv", row.names = TRUE)
 
+## Create a new data frame called "resights_all_binders" combining all resight_binder data frames "resight_binder0" to "resight_binder4"
+resights_all_binders <- bind_rows(
+  resight_binder0,
+  resight_binder1,
+  resight_binder2,
+  resight_binder3,
+  resight_binder4
+)
+# Export "resights_all_binders" data frame to CSV file  
+write.csv(resights_all_binders, file = "CLEANDATA/resights_all_binders.csv", row.names = TRUE)
+
+#####################################################################################
+###Code from 2026-01-03 ends here##################################################
+#####################################################################################
 
 
 #Combine columns x.1, x.2 and x.3 of binder2 into a new column called date and then incorporate it into date_resighted column
