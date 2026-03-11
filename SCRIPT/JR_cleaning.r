@@ -144,5 +144,4 @@ all_resight_locations <- left_join(all_resight,cleaned_locations, by=join_by(loc
   rename(original_location_description = location) %>%
   select(band_num, date_resighted, original_location_description, general_location, exact_location, status, comments)
 
-
-ggplot(data=all_resight_locations, aes(date_resighted)) + geom_histogram()
+write.csv(all_resight_locations, "BOREALIS/resightings.csv")
