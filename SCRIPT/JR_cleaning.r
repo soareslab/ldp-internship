@@ -1,4 +1,6 @@
-# updated cleaning code written by Jessica Reemeyer to fix issues with data cleaning 
+# Code to clean raw data input from physical data sheets
+# written by Jessica Reemeyer in Spring 2026 
+# contact jessica.reemeyer[at]mail.mcgill.ca for questions
 
 library(tidyverse)
 library(sf)
@@ -13,12 +15,15 @@ banding_info <- raw_banding_info %>%
          SPECIES = str_replace_all(SPECIES, "GAD", "GADW"), #replacing GAD with GADW
          SPECIES = str_trunc(SPECIES, 4, ellipsis=""), #to fix instance of GADWALL entered instead of GADW 
          date = as.Date(DATE, format = "%m/%d/%Y", optional=TRUE) 
-  ) %>%
+  ) %>% 
+  mutate(band_num = gsub("[+qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM ]", "", band_num)) %>% #removing the extra text from some of the band_num
+  mutate(band_num = gsub("--", "-", band_num)) %>% #fixing band_num with double --
   select(band_num, date, SPECIES, COORDINATES) %>%
   distinct(band_num, .keep_all = TRUE) %>% #removes about 200 duplicate banding numbers 
   separate(COORDINATES, c("latitude", "longitude"), sep = " ", remove = TRUE) %>%
   rename(species=SPECIES)
 
+#uncomment below to save the banding info
 #write.csv(banding_info, "CLEANDATA/JR_cleaned/banding_event_information.csv")
 
 #### Resighting Data ####
@@ -40,12 +45,18 @@ binder0 <- read.csv(file = "RAWDATA/binder0-resightings.csv", header = TRUE, sep
 all_resight <- bind_rows(binder0, binder1, binder2, binder3, binder4) %>% 
   filter(!is.na(date_resighted) & !is.na(location) & band_num!="DONE" & band_num !="") %>% 
   select(band_num, date_resighted, location, observer, status, comments) %>%
+  mutate(band_num = gsub("[+qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM ]", "", band_num)) %>% #removing the extra text from some of the band_num
+  mutate(band_num = gsub("--", "-", band_num)) %>% #fixing band_nums that had extra "-" between digits
   #cleaning the date column by parsing those in ymd and those in dmy into separate columns and then coalescing them
   mutate(ymd = ymd(date_resighted),
          dmy = dmy(date_resighted),
          date_resighted = coalesce(ymd,dmy)) %>%
   select(-ymd, -dmy) %>%
-  filter(date_resighted >= "1980-01-01") #filtering 3 dates with typos in the year making them impossible (e.g. 1901)
+  filter(date_resighted >= "1980-01-01" & #filtering 3 dates with typos in the year making them impossible (e.g. 1901)
+         !str_detect(comments,"not seen") & #removing entries where a bird wasn't seen
+        !str_detect(comments, "not observed") & #removing entries where a bird wasn't seen
+          !str_detect(status, "not seen") & #removing entries where a bird wasn't seen
+          !status=="?") #removing entries where a bird wasn't seen
 
 
 ## seeing which bands are in the banding info 
@@ -53,33 +64,11 @@ unique_bands_resight <- data.frame(unique(all_resight$band_num))
 unique_bands_resight$band_num <- unique(all_resight$band_num)
 unique_bands_resight$banding_info <- unique_bands_resight$band_num %in% banding_info$band_num
 missing_bands <- unique_bands_resight %>% filter(banding_info==FALSE) #the band numbers not found in the banding_info dataset
-length(unique_bands_resight$band_num)-sum(unique_bands_resight$banding_info) # 17 band numbers not found in the banding_info datasheet
+bands_keep <- unique_bands_resight %>% filter(banding_info==TRUE)
+length(unique_bands_resight$band_num)-sum(unique_bands_resight$banding_info) # 9 band numbers not found in the banding_info datasheet
 
 
-#Checking for the missing resight band_num that were not in the banding_info dataframe
-# read in the radiotag data and combine
-radio_tagging_binder6 <- read.csv(file = "RAWDATA/radio_tagging_binder6.csv", header = TRUE, sep = ",")
-radio_tagging_binder5 <- read.csv(file = "RAWDATA/radio_tagging_binder5.csv", header = TRUE, sep = ",")
-radio_tagging_binder4 <- read.csv(file = "RAWDATA/radio_tagging_binder4.csv", header = TRUE, sep = ",")
-radio_tagging_binder3 <- read.csv(file = "RAWDATA/radio_tagging_binder3.csv", header = TRUE, sep = ",")
-radio_tagging_binder2 <- read.csv(file = "RAWDATA/radio_tagging_binder2.csv", header = TRUE, sep = ",")
-radio_tagging_binder1 <- read.csv(file = "RAWDATA/radio_tagging_binder1.csv", header = TRUE, sep = ",")
-radio_tagging_binder0 <- read.csv(file = "RAWDATA/radio_tagging_binder0.csv", header = TRUE, sep = ",")
-
-#combine binders and filter out rows without band_num and no species listed (these were caused by comments being added haphazardly to the end of the binder spreadsheets)
-radio_data <- rbind(radio_tagging_binder0, 
-                    radio_tagging_binder1,
-                    radio_tagging_binder2,
-                    radio_tagging_binder3,
-                    radio_tagging_binder4,
-                    radio_tagging_binder5,
-                    radio_tagging_binder6) %>% 
-  filter(!is.na(band_num)&species!="") 
-
-## Seeing if 17 missing band nums are in the radiotag dataset
-missing_bands$band_num %in% radio_data$band_num #3 are in there, 14 are not
-#NEED TO APPEND THOSE 3 to banding info dataframe for final output (with "unknown tagging date")
-
+#### pond coordinates ####
 
 ## make decimal lat long from SD_pond_coords_in.csv dataset 
 pond_coords <- read.csv(file = "RAWDATA/SD_pond_coords_in.csv", header = TRUE, sep = ",") %>%
@@ -99,6 +88,16 @@ df_longlat_final <- df_sf_longlat %>%
   ) %>%
   # Convert back to a standard data frame
   st_drop_geometry() 
+
+pond_coords_clean <- df_longlat_final %>% select(pond_name6, latitude, longitude) %>% 
+  rename(location_name = pond_name6)
+write.csv(pond_coords_clean, "BOREALIS/pond_coords.csv")
+
+
+
+#### Trying to clean the locations in resightings ####
+# a bit of cleaning was accomplished with the code below, but most of the cleaning was done manually
+# most of the exact locations were not decipherable, but were reasonably assumed to be in the St Denis NWA or immediately surrounding 
 
 unique_locations <- distinct(all_resight, location) %>% 
   rename(orig_location = location) %>% 
@@ -131,3 +130,19 @@ for(i in 1:length(unique_locations$orig_location)){
 
 write.csv(unique_locations, "CLEANDATA/JR_cleaned/site_ID_info.csv")
 
+#### Actually cleaning the locations in resightings ####
+
+cleaned_locations <- read.csv("CLEANDATA/JR_cleaned/site_ID_info_04Mar2026.csv") %>% 
+  mutate(gen_location = case_when(general_location =="within NWA" ~ "NWA",
+                                      general_location == "surrounding area" ~ "NWA",
+                                  general_location == "outside area" ~ "outside area")) %>%
+  select(-general_location) %>%
+  rename(location = original_location_description, 
+         general_location = gen_location)
+
+all_resight_locations <- left_join(all_resight,cleaned_locations, by=join_by(location)) %>% 
+  rename(original_location_description = location) %>%
+  select(band_num, date_resighted, original_location_description, general_location, exact_location, status, comments)
+
+
+ggplot(data=all_resight_locations, aes(date_resighted)) + geom_histogram()
