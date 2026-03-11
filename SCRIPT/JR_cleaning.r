@@ -24,7 +24,7 @@ banding_info <- raw_banding_info %>%
   rename(species=SPECIES)
 
 #uncomment below to save the banding info
-#write.csv(banding_info, "CLEANDATA/JR_cleaned/banding_event_information.csv")
+write.csv(banding_info, "BOREALIS/banding_information.csv")
 
 #### Resighting Data ####
 
