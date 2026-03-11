@@ -1,19 +1,19 @@
-﻿file,variable,description
-banding_info.csv,band_num,
-,date,
-,species,
-,latitude,
-,longitude,
-species_codes.csv,species_code,
-,species_sci,
-,species_common,
-resightings.csv,band_num,
-,date_resighted,
-,location_exact,
-,location_general,
-,location_description,
-,status,
-,comments,
-pond_coords.csv,pond_name,
-,longitude,
-,latitude,
+﻿file,variable,description,data type
+banding_info.csv,band_num,unique identifier for a bird that has been banded,string
+,date,date when the bird was banded,string
+,species,bird species in four character code (see species_codes.csv for full species names),string
+,latitude,latitude of the location where the bird was caught and banded  in decimal degrees,numeric
+,longitude,longitude of the location where the bird was caught and banded in decimanl degrees,numeric
+species_codes.csv,species_code,bird species in four character code,string
+,species_sci,bird species scientific name,string
+,species_common,bird species common name,string
+resightings.csv,band_num,unique identifier for individual birds,string
+,date_resighted,date when the bird was sighted by a researcher in YYYY-MM-DD,string
+,original_location_description,,string
+,location_exact,"if available, this column provides the site where the bird was sighted. The corresponding latitude and longitude information for these sites is listed in the pond_coords.csv dataset. If unavailable the value is ""unknown""",string
+,location_general,"describes the general location where the resighting took place. Values of ""NWA"" refer to those resighted within the St Denis National Wildlife area and it's immediate surroundings, while ""outside area"" refer to those sighted away from the NWA",string
+,status,"describes characteristics of the sighting, often whether the bird was alone, at a nest, etc. The text included is as it was written in the original handwritten data sheets",string
+,comments,any comments as written on the original handwritten datasheet,string
+pond_coords.csv,pond_name,unique identifier for pond sites within and surrounding the St Denis National Wildlife area,string
+,longitude,longitude in decimal degrees,numeric
+,latitude,latitude in decimal degrees,numeric
