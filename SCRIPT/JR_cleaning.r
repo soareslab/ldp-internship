@@ -142,6 +142,8 @@ cleaned_locations <- read.csv("CLEANDATA/JR_cleaned/site_ID_info_04Mar2026.csv")
 
 all_resight_locations <- left_join(all_resight,cleaned_locations, by=join_by(location)) %>% 
   rename(original_location_description = location) %>%
-  select(band_num, date_resighted, original_location_description, general_location, exact_location, status, comments)
+  select(band_num, date_resighted, original_location_description, general_location, exact_location, status, comments) %>% 
+  filter(!is.na(general_location)) %>%
+  distinct(.keep_all=TRUE) 
 
-write.csv(all_resight_locations, "BOREALIS/resightings.csv")
+write_csv(all_resight_locations, "BOREALIS/resightings.csv")
